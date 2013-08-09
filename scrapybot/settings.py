@@ -13,3 +13,8 @@ NEWSPIDER_MODULE = 'scrapybot.spiders'
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'scrapybot (+http://www.yourdomain.com)'
+USER_AGENT  = "Mozilla/5.0 (Windows NT 5.1) AppleWebKit/535.2 (KHTML, like Gecko) Chrome/15.0.874.121 Safari/535.2"
+
+
+COOKIES_ENABLED = True
+COOKIES_DEBUG = True
