@@ -17,4 +17,11 @@ USER_AGENT  = "Mozilla/5.0 (Windows NT 5.1) AppleWebKit/535.2 (KHTML, like Gecko
 
 
 COOKIES_ENABLED = True
-COOKIES_DEBUG = True
+#COOKIES_DEBUG = True
+
+ITEM_PIPELINES = [
+    'scrapybot.pipelines.ScrapybotPipeline'
+]
+
+
+DOWNLOAD_DELAY = 10

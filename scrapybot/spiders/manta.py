@@ -24,8 +24,10 @@ class MantaSpider(CrawlSpider):
 
     def parse_search_result(self, response):
         hxs = HtmlXPathSelector(response)
-        hxs.select('//a[contains(@class, "nextYes")]').extract().uniq()
-        
+        elems = hxs.select('//a[contains(@class, "nextYes")]/@href').extract()
+        if len(elems)>=1:
+            yield Requeset(elems[0], callback=self.parse_company)
+
     def parse_company(self, response):
         hxs = HtmlXPathSelector(response)
         items = []
