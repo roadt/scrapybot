@@ -13,6 +13,3 @@ class ScrapybotItem(Item):
 
 
 
-
-#import all qidan item definition
-from .qidian import *

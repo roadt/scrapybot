@@ -2,3 +2,5 @@
 
 # ignore all py compiled file.
 *.pyc
+build/
+*.egg-info
