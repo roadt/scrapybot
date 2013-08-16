@@ -14,3 +14,5 @@ class Article(Item):
     char_count = Field()
     last_update = Field()
     key = Field()
+
+    description = Field()
