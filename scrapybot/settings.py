@@ -20,7 +20,9 @@ COOKIES_ENABLED = True
 #COOKIES_DEBUG = True
 
 ITEM_PIPELINES = [
-    'scrapybot.pipelines.ScrapybotPipeline'
+#    'scrapybot.pipelines.ScrapybotPipeline',
+	'scrapybot.pipelines.mongo.MongoPipeline'
+
 ]
 
 

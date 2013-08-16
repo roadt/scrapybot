@@ -3,12 +3,13 @@ from scrapy.contrib.linkextractors.sgml import SgmlLinkExtractor
 from scrapy.contrib.spiders import CrawlSpider, Rule
 from scrapy.http import Request
 from scrapybot.items.qidian import *
+import re
 
 class QidianSpider(CrawlSpider):
     name = 'qidian'
     allowed_domains = ['qidian.com']
     start_urls = ['http://all.qidian.com/book/bookstore.aspx']
-    start_urls.extend([ 'http://all.qidian.com/book/bookstore.aspx?PageIndex=%s'%n for n in range(2,1001)])
+	#    start_urls.extend([ 'http://all.qidian.com/book/bookstore.aspx?PageIndex=%s'%n for n in range(2,1001)])
     print start_urls
     rules = (
     #        Rule(SgmlLinkExtractor(allow=r'Items/'), callback='parse_item', follow=True),
@@ -27,6 +28,7 @@ class QidianSpider(CrawlSpider):
             i['author_url'] = self.extract(h, 'div[@class="swd"]/a/@href')
             i['char_count'] = self.extract(h, 'div[@class="swc"]/text()', 0)
             i['last_update'] = self.extract(h, 'div[@class="swe"]/text()')
+            i['key'] = re.search("/(\d+).aspx$",i['url']).group(1)
             #    yield Request(i['author_url'],callback=self.parse_user)
             yield i
 
