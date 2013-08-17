@@ -19,11 +19,19 @@ USER_AGENT  = "Mozilla/5.0 (Windows NT 5.1) AppleWebKit/535.2 (KHTML, like Gecko
 COOKIES_ENABLED = True
 #COOKIES_DEBUG = True
 
+
+############  Pipelines ##############
 ITEM_PIPELINES = [
 #    'scrapybot.pipelines.ScrapybotPipeline',
-	'scrapybot.pipelines.mongo.MongoPipeline'
-
+	'scrapymongo.pipelines.MongoPipeline'
 ]
 
+# for scrapymongo.pipelines.MongoPipeline
+MONGO_PIPELINE_DBNAME = 'scrapy'
+
+
+
+
+########## downloader #############
 
 DOWNLOAD_DELAY = 0
