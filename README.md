@@ -30,3 +30,9 @@ scrapy crawl crunchbase     # make sure your default (local) mongodb is up.
  
  MIT License.
 
+=======
+scrapybot
+=========
+
+a scrapybot  for my personal use
+
