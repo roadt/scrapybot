@@ -14,10 +14,19 @@ Currently 3 spiders in it.
     * crunchbase -  a YP, company information site.  work smoothly.
     * manta  (still draft, and need further turning)
     
+
+
+Try it
+========================
+git clone https://github.com/roadt/scrapybot
+git submodule update
+scrapy crawl crunchbase     # make sure your default (local) mongodb is up.
+
+
+
+
    
  Project for my personal use.
  
  MIT License.
-
-
 

@@ -29,9 +29,6 @@ ITEM_PIPELINES = [
 # for scrapymongo.pipelines.MongoPipeline
 MONGO_PIPELINE_DBNAME = 'scrapy'
 
-MYSQL_HOST
-
-
 
 ########## downloader #############
 
