@@ -20,7 +20,7 @@ COOKIES_ENABLED = True
 #COOKIES_DEBUG = True
 
 
-############  Pipelines ##############
+############  Pipelines Section ##############
 ITEM_PIPELINES = [
 #    'scrapybot.pipelines.ScrapybotPipeline',
 	'scrapymongo.pipelines.MongoPipeline'
@@ -29,9 +29,13 @@ ITEM_PIPELINES = [
 # for scrapymongo.pipelines.MongoPipeline
 MONGO_PIPELINE_DBNAME = 'scrapy'
 
+MYSQL_HOST
 
 
 
 ########## downloader #############
 
-DOWNLOAD_DELAY = 0
+DOWNLOAD_DELAY = 0.5
+
+########## downloader middleware #########
+HTTPCACHE_ENABLE = True

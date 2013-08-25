@@ -1,0 +1,3 @@
+[submodule "scrapymongo"]
+	path = scrapymongo
+	url = https://github.com/roadt/scrapymongo.git
