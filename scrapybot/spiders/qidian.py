@@ -26,8 +26,8 @@ class QidianSpider(BaseSpider):
     def parse_article_detail(self, response):
         hxs = HtmlXPathSelector(response)
         i = response.meta['article']
-        i['description'] = self.extract(hxs, '//span[@itemprop="description"]/text()')
-        print i['description']
+        i['description'] = self.extract(hxs, '//span[@itemprop="description"]/text()').strip()
+        #print i['description']
         return i
 
     def parse_article_list(self, response):
@@ -43,7 +43,7 @@ class QidianSpider(BaseSpider):
             i['last_update'] = self.extract(h, 'div[@class="swe"]/text()')
             i['key'] = re.search("/(\d+).aspx$",i['url']).group(1)
             #Request(i['author_url'],callback=self.parse_user)
-            yield Request('http://all.qidian.com'+i['url'], meta={'article':i},callback=self.parse_article_detail)
+            yield Request(i['url'], meta={'article':i},callback=self.parse_article_detail)
 
 
     def parse_user(self, response):
