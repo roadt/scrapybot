@@ -1,6 +1,9 @@
 
 
 # ignore all py compiled file.
-*.pyc
+**/*.pyc
+**/*.egg-info
+**/*.csv
+**/*.json
+
 build/
-*.egg-info
