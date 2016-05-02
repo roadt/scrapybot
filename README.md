@@ -15,6 +15,10 @@ Currently 3 spiders in it.
     * manta  - small business info site (status: still draft, and need further turning) 
     
 
+and a simple flask webapp to visulize scraped data  for
+	
+	* qidan
+
 
 Try it
 ========================
@@ -26,18 +30,12 @@ or scrapy to csv file
 
 	    scrapy crawl qidian -o qidian.csv   [download example result data](./qidian.csv)
 
+start flask app
+	  $ web/qidian/app.sh
 
 
-
-
-   
- Project for my personal use.
  
  MIT License.
-
 =======
-scrapybot
-=========
 
-a scrapybot  for my personal use
 

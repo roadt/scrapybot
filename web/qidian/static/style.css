@@ -1,0 +1,35 @@
+
+
+.article {
+    float: left;
+    margin: 1em;
+    padding: 1em;
+    border: 2px silver dotted;
+    width: 10em;
+    height: 15em;
+}
+
+.article .title {
+    font-weight: bold;
+    font-size: 1em;
+    
+}
+
+.pagelist {
+    
+}
+
+.pagelist .page{
+    margin: 1em;
+    padding: 1em;
+    border: 2px silver dotted;
+    min-width: 20em;
+    min-height: 20em;
+}
+.page .index{
+    tex-align: center;
+}
+
+.page img{
+    
+}

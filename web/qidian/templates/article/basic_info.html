@@ -1,0 +1,13 @@
+  <div class=" basic_info">
+    <h1>{{ object. title }} </h1>
+	<div>{{ object.description }}</div>
+    <div>{{ object.url|urlize }}</div>
+    <div>{{ object.author_name }}</div>
+    <div>{{ object.author_url|urlize }}</div>
+    <div>{{ object.last_update }} </div>
+    
+    <div>  <textarea cols=200 rows=50>
+	{{ object }}
+      </textarea>
+    </div>
+  </div>

@@ -1,0 +1,26 @@
+{% extends "layout.html" %}
+
+{% block body %}
+
+
+<div class="article">
+
+  {% include "article/basic_info.html" %}
+
+  <div class="pagelist">
+    {% for page in object.pages %}
+    <div class="page">
+      {% if page.image_path is defined and not page.image_path is none %}
+      <img src={{ url_for("image", path=page.image_path) }} alt={{page.idx}}></img>
+      {% else %}
+      <img src='/static/blank32x32.png' alt={{page.idx}}></img>
+      {% endif %}
+      <div class="index">{{ page.idx }}</div>
+      <div class="url">{{ page.url|urlize }}</div>
+      <div class="image_path">{{ page.image_path}}</div>
+    </div>
+    {% endfor %}
+  </div>
+  
+</div>
+{% endblock %}

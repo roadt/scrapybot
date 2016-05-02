@@ -1,0 +1,64 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+<div>
+  {% for o in objects %}
+  <div class="article" id="{{o._id}}">
+    <a href="{{ url_for ("article", gid=o._id) }}">
+      
+      {% if o.cover_path is defined and  not o.cover_path is none %}  
+      <img src="{{ url_for('image', path=o.cover_path) }}"></img>
+      {% else %}
+      <img src="{{ o.cover_url }}"></img>
+      {% endif %}
+      <div class="title">{{ o.title }}</div>
+      
+    </a>
+    <button class="delete">Delete</button>
+    <button class="scrape">Scrape Detail</button>
+    {#<textarea rows=10> {{ o}} </textarea>#}
+  </div>
+  {% endfor %}
+  <script>
+    $('button.delete').click(function(e) {
+	console.log(arguments);
+	e = e.currentTarget;
+	ge =$(e).parent();
+	$.ajax({
+	    url: "/article/" + ge.attr('id') + "/delete",
+	    type : "POST",
+	    success:  function(e) {
+		console.log(arguments)
+		window.e = arguments
+		ge.remove();
+	    },
+	    error: function(e) {
+		console.error(arguments)
+	    },
+	    dataType: ""
+	});
+    });
+
+    $('button.scrape').click(function(e) {
+	console.log(arguments);
+	e = e.currentTarget;
+	ge =$(e).parent();
+	$.ajax({
+	    url: "/article/" + ge.attr('id') + "/scrape",
+	    type : "POST",
+	    success:  function(e) {
+		console.log(arguments)
+		window.e = arguments
+		ge.remove();
+	    },
+	    error: function(e) {
+		console.error(arguments)
+	    },
+	    dataType: "application/json"
+	});
+    });
+
+  </script>
+  
+</div>
+{% endblock %}
