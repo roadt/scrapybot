@@ -23,11 +23,18 @@ COOKIES_ENABLED = True
 ############  Pipelines Section ##############
 ITEM_PIPELINES = [
 #    'scrapybot.pipelines.ScrapybotPipeline',
-	'scrapymongo.pipelines.MongoPipeline'
+    'scrapybot.pipelines.file.YAFilePipeline' ,
+    'scrapymongo.pipelines.MongoPipeline',
 ]
+
 
 # for scrapymongo.pipelines.MongoPipeline
 MONGO_PIPELINE_DBNAME = 'scrapy'
+FILES_STORE = '/home/roadt/Pictures/scrapy'
+
+
+#FILES_EXPIRES = 90
+#IMAGES_EXPIRES = 30
 
 
 ########## downloader #############

@@ -4,6 +4,7 @@
 # See: http://doc.scrapy.org/topics/item-pipeline.html
 
 from scrapybot.items import *
+
 import MySQLdb
 
 class ScrapybotPipeline(object):
@@ -18,6 +19,3 @@ class ScrapybotPipeline(object):
                 sql = "insert into articles (title, url, author_name, author_url, char_count, last_update) values ('%s','%s','%s','%s','%s','%s')" % (item['title'], item['url'], item['author_name'], item['author_url'], item['char_count'], item['last_update'])
                 c.execute(sql)
                 self.connection.commit()        
-
-
-
