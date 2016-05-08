@@ -6,6 +6,14 @@
 #     http://doc.scrapy.org/topics/settings.html
 #
 
+
+import sys, os
+
+def getenv(name, default=None):
+    return os.environ.get(name) or default
+
+
+
 BOT_NAME = 'scrapybot'
 
 SPIDER_MODULES = ['scrapybot.spiders']
@@ -29,8 +37,12 @@ ITEM_PIPELINES = [
 
 
 # for scrapymongo.pipelines.MongoPipeline
-MONGO_PIPELINE_DBNAME = 'scrapy'
-FILES_STORE = '/home/roadt/Pictures/scrapy'
+MONGO_PIPELINE_HOST =  getenv('MONGO_PIPELINE_HOST', 'venus')
+MONGO_PIPELINE_DBNAME = getenv('MONGO_PIPELINE_DB_NAME', 'scrapy')
+FILES_STORE = getenv('FILE_STORE', '/RAD/testdisk/scrapy')
+FILES_URLS_FIELD= getenv('FILES_URLS_FIELD', 'image_urls')
+FILES_RESULT_FIELD= getenv('FILES_RESULT_FIELD', 'images')
+#FILES_EXPIRES = 90
 
 
 #FILES_EXPIRES = 90
