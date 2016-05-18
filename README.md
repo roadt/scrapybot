@@ -11,6 +11,7 @@ it has a mongo backend, i write a simple & flexiable toy mongo piple. to automat
 Currently 3 spiders in it. 
     
     * qidan  - famous chinese online novel site.    (status: work)
+	* pptv - chinese online video site ( status: work)
     * crunchbase -  a YP, company information site.  (status: not work now  due to site redesign)
     * manta  - small business info site (status: still draft, and need further turning) 
     

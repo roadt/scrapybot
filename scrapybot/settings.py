@@ -37,12 +37,12 @@ ITEM_PIPELINES = [
 
 
 # for scrapymongo.pipelines.MongoPipeline
-MONGO_PIPELINE_HOST =  getenv('MONGO_PIPELINE_HOST', 'venus')
+MONGO_PIPELINE_HOST =  getenv('MONGO_PIPELINE_HOST', 'localhost')
 MONGO_PIPELINE_DBNAME = getenv('MONGO_PIPELINE_DB_NAME', 'scrapy')
-FILES_STORE = getenv('FILE_STORE', '/RAD/testdisk/scrapy')
+FILES_STORE = getenv('FILE_STORE', os.path.join(getenv('HOME'), MONGO_PIPELINE_DBNAME))
 FILES_URLS_FIELD= getenv('FILES_URLS_FIELD', 'image_urls')
 FILES_RESULT_FIELD= getenv('FILES_RESULT_FIELD', 'images')
-#FILES_EXPIRES = 90
+FILES_EXPIRES= getenv('FILES_EXPIRES', 90)
 
 
 #FILES_EXPIRES = 90
@@ -51,7 +51,9 @@ FILES_RESULT_FIELD= getenv('FILES_RESULT_FIELD', 'images')
 
 ########## downloader #############
 
-DOWNLOAD_DELAY = 0.5
+#DOWNLOAD_DELAY = 0.5
 
 ########## downloader middleware #########
-HTTPCACHE_ENABLE = True
+HTTPCACHE_ENABLED = True
+HTTPCACHE_IGNORE_HTTP_CODES=[302]
+#HTTPCACHE_STORAGE = 'scrapymongo.cache.MongoCacheStorage'
