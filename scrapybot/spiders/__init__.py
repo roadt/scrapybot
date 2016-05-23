@@ -91,4 +91,10 @@ class ArgsSupport(object):
         return None
 
 
+    def go(self, category, levelname, default=False):
+        if default:
+            nocat = "no"+category
+            return not (nocat  in self.kwargs and levelname in self.kwargs[nocat])
+        else:
+            return category in self.kwargs and levelname in self.kwargs[category]
 
