@@ -51,26 +51,32 @@ class CacheSpider(ArgsSupport, scrapy.Spider):
 
 
     def parse(self, response):
+        # others (images, stylesheets, scripts)
+        # no filter check need, it is mostly needed for cache a site
+        # give each have a global  swtich to skip
+        cfg = {
+            'image' : 'img::attr("src")',
+            'stylesheet' : 'link[rel="stylesheet"]::attr("href")',
+            'script'  : 'script::attr("src")'
+        }
+        for cat, expr in cfg.iteritems():
+            if self.go('rlevel', cat, True):
+                for url in response.css(expr).extract():
+                    logger.debug("%s:%s %s" % (type(self).__name__,  'parse - %s' % cat,  [url]))
+                    yield scrapy.Request(response.urljoin(url), callback=self.parse_none)
         
+        #links - <a>
         for url in response.css('a::attr("href")').extract():
             logger.debug("%s:%s %s" % (type(self).__name__,  'parse - url',  [url]))
+            # do fliter check
             if self.urlfilter_passed(url):
                 logger.info("%s:%s %s" % (type(self).__name__,  'parse - pass - url ',  [url]))
                 yield scrapy.Request(response.urljoin(url), callback=self.parse)
             else:
                 logger.debug("%s:%s %s" % (type(self).__name__,  'parse - url -filtered',  [url]))
-            
-        
-        if self.go('rlevel', 'image', True):
-            for url in response.css('img::attr("src")').extract():
-                if self.urlfilter_passed(url):
-                    logger.debug("%s:%s %s" % (type(self).__name__,  'parse - pass - image',  [url]))
-                    yield scrapy.Request(response.urljoin(url), callback=self.parse_image)
-                else:
-                    logger.debug("%s:%s %s" % (type(self).__name__,  'parse - image - filtered',  [url]))
 
 
-    def parse_image(self, response):
+    def parse_none(self, response):
         pass
 
 
