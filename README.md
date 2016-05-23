@@ -8,13 +8,15 @@ This is simple scrapybot to scratch out some data i need, it uses scrapy-framewo
 it has a mongo backend, i write a simple & flexiable toy mongo piple. to automatically sync data to mongodb.
 [scrapymongo](https://github.com/roadt/scrapymongo).
 
-Currently 3 spiders in it. 
+Current  spiders in it. 
     
     * qidan  - famous chinese online novel site.    (status: work)
 	* pptv - chinese online video site ( status: work)
     * crunchbase -  a YP, company information site.  (status: not work now  due to site redesign)
     * manta  - small business info site (status: still draft, and need further turning) 
-    
+	  
+	* cache - a web crawler for cache whole site with externdable filter method  (status: work)
+
 
 and a simple flask webapp to visulize scraped data  for
 	
