@@ -49,11 +49,16 @@ FILES_EXPIRES= getenv('FILES_EXPIRES', 90)
 #IMAGES_EXPIRES = 30
 
 
-########## downloader #############
+##### downloader
 
 DOWNLOAD_DELAY = 1.5
 
-########## downloader middleware #########
+
+##### dupfitler
+#DUPEFILTER_CLASS = 'scrapymongo.cache.CacheDupeFilter'
+DUPEFILTER_DEBUG=True
+JOB_DIR= os.path.join(FILES_STORE, 'jobs')
+##### downloader middleware
 HTTPCACHE_ENABLED = True
 HTTPCACHE_IGNORE_HTTP_CODES=[302]
 HTTPCACHE_STORAGE = 'scrapymongo.cache.MongoCacheStorage'

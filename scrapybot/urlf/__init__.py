@@ -10,7 +10,7 @@ def scheme(url, **kwargs):
 
 
 def regex(url, **kwargs):
-    exprs =   'regex' in kwargs and kwargs['regex'].split(',') or []
+    exprs =   'regex' in kwargs and kwargs['regex'].split(',') or ['.*']
     def check(url, expr):
         return bool(re.search(expr, url))
     return any(map(partial(check, url), exprs))

@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import sys,os
+import re
 import scrapy
 import logging
 import urlparse
@@ -51,6 +52,12 @@ class CacheSpider(ArgsSupport, scrapy.Spider):
 
 
     def parse(self, response):
+
+        # 1st, if the response is not text/html, pass, httpcache will cache it anway
+        if not re.search("text/html", response.headers['Content-Type']):
+            logger.info("%s:%s %s" % (type(self).__name__,  'parse - can not parse',  [response.url, response.headers]))
+            
+        
         # others (images, stylesheets, scripts)
         # no filter check need, it is mostly needed for cache a site
         # give each have a global  swtich to skip
@@ -62,18 +69,17 @@ class CacheSpider(ArgsSupport, scrapy.Spider):
         for cat, expr in cfg.iteritems():
             if self.go('rlevel', cat, True):
                 for url in response.css(expr).extract():
-                    logger.debug("%s:%s %s" % (type(self).__name__,  'parse - %s' % cat,  [url]))
-                    yield scrapy.Request(response.urljoin(url), callback=self.parse_none)
+                    abs_url = response.urljoin(url)
+                    logger.debug("%s:%s %s" % (type(self).__name__,  'parse - %s' % cat,  [abs_url]))
+                    yield scrapy.Request(abs_url, callback=self.parse_none)
         
         #links - <a>
         for url in response.css('a::attr("href")').extract():
-            logger.debug("%s:%s %s" % (type(self).__name__,  'parse - url',  [url]))
+            abs_url = response.urljoin(url)
             # do fliter check
-            if self.urlfilter_passed(url):
-                logger.info("%s:%s %s" % (type(self).__name__,  'parse - pass - url ',  [url]))
-                yield scrapy.Request(response.urljoin(url), callback=self.parse)
-            else:
-                logger.debug("%s:%s %s" % (type(self).__name__,  'parse - url -filtered',  [url]))
+            if self.urlfilter_passed(abs_url):
+                logger.info("%s:%s %s" % (type(self).__name__,  'parse - pass - url ',  [abs_url]))
+                yield scrapy.Request(abs_url, callback=self.parse)
 
 
     def parse_none(self, response):
