@@ -56,6 +56,7 @@ class CacheSpider(ArgsSupport, scrapy.Spider):
         # 1st, if the response is not text/html, pass, httpcache will cache it anway
         if not re.search("text/html", response.headers['Content-Type']):
             logger.info("%s:%s %s" % (type(self).__name__,  'parse - can not parse',  [response.url, response.headers]))
+            raise StopIteraton()
             
         
         # others (images, stylesheets, scripts)
