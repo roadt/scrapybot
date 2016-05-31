@@ -10,10 +10,11 @@ it has a mongo backend, i write a simple & flexiable toy mongo piple. to automat
 
 Current  spiders in it. 
     
-    * qidan  - famous chinese online novel site.    (status: work)
-	* pptv - chinese online video site ( status: work)
-    * crunchbase -  a YP, company information site.  (status: not work now  due to site redesign)
-    * manta  - small business info site (status: still draft, and need further turning) 
+    * qidan  - famous chinese online novel site.
+	* pptv - chinese online video site
+	* deviantart -  art/pictures sharing site
+    * crunchbase -  a YP, company information site.  ( not work now  due to site redesign)
+    * manta  - small business info site. (site is not reachable now)
 	  
 	* cache - a web crawler for cache whole site with externdable filter method  (status: work)
 
