@@ -26,7 +26,7 @@ class Art(Item):
     author_url = Field()
 
     tag_names = Field()
-    category_names = Field()
+    cat_names = Field()
 
     thumb_url = Field({'file_url': {'path': 'thumb_path', 'cb': 'thumb_path_cb' }})
     thumb_path = Field()

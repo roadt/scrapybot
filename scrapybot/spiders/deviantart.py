@@ -117,19 +117,24 @@ class DeviantArtSpider(ArgsSupport, scrapy.Spider):
 
     def parse_art_page(self, response):
         # art info
-        a = response.meta.get('art') or Art()
-        a['url']  = response.request.url
-        
-        a['name'] = response.css('.dev-title-container h1 a::text').extract_first()
-        a['author_name'] = response.css('.dev-title-container h1 .u a::text').extract_first()
-        a['author_url'] = response.css('.dev-title-container h1 .u a::attr("href")').extract_first()
-        
-        a['image_url'] = response.css('.dev-view-deviation img::attr("src")').extract_first()
-        a['description'] = response.css('.dev-description .text').extract_first()
-        a['file_url'] = response.css('.dev-page-download::attr("href")').extract_first()
+        if not response.css('.dev-view-deviation .devpage_gate'): 
+            a = response.meta.get('art') or Art()
+            a['url']  = response.request.url
+            
+            a['name'] = response.css('.dev-title-container h1 a::text').extract_first()
+            a['author_name'] = response.css('.dev-title-container h1 .u a::text').extract_first()
+            a['author_url'] = response.css('.dev-title-container h1 .u a::attr("href")').extract_first()
 
-        if self.go('model', 'art', True):
-            yield a
+            a['image_url'] = response.css('.dev-view-deviation img::attr("src")').extract_first()
+
+            a['description'] = response.css('.dev-description .text').extract_first()
+            a['cat_names'] = response.css('.dev-about-cat-cc a span::text').extract()
+            a['tag_names'] = response.css('.dev-about-tags-cc .discoverytag::text').extract()
+
+            a['file_url'] = response.css('.dev-page-download::attr("href")').extract_first()
+
+            if self.go('model', 'art', True):
+                yield a
         
         # more from artist
         if self.go('rlevel', 'more_from_artist', False):

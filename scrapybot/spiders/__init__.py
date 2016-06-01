@@ -5,6 +5,7 @@
 
 import scrapy
 import logging
+from scrapy.utils.misc import load_object
 logger = logging.getLogger(__name__)
 
 
