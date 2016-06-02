@@ -122,8 +122,8 @@ class DeviantArtSpider(ArgsSupport, scrapy.Spider):
             a['url']  = response.request.url
             
             a['name'] = response.css('.dev-title-container h1 a::text').extract_first()
-            a['author_name'] = response.css('.dev-title-container h1 .u a::text').extract_first()
-            a['author_url'] = response.css('.dev-title-container h1 .u a::attr("href")').extract_first()
+            a['author_name'] = response.css('.dev-title-container h1 .username::text').extract_first()
+            a['author_url'] = response.css('.dev-title-container h1 .username::attr("href")').extract_first()
 
             a['image_url'] = response.css('.dev-view-deviation img::attr("src")').extract_first()
 
