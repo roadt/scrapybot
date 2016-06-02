@@ -129,8 +129,12 @@ class DeviantArtSpider(ArgsSupport, scrapy.Spider):
 
             a['description'] = response.css('.dev-description .text').extract_first()
             a['cat_names'] = response.css('.dev-about-cat-cc a span::text').extract()
-            a['tag_names'] = response.css('.dev-about-tags-cc .discoverytag::text').extract()
 
+            def lstrip_tags(tags):
+                if tags:
+                    return list(map(lambda t:t.lstrip('#'), tags))
+
+            a['tag_names'] = lstrip_tags(response.css('.dev-about-tags-cc .discoverytag::text').extract())
             a['file_url'] = response.css('.dev-page-download::attr("href")').extract_first()
 
             if self.go('model', 'art', True):

@@ -1,10 +1,40 @@
 
 import sys,os
+import re
 from shovel import task
 from pymongo import MongoClient,ASCENDING
 from scrapy.utils.project import get_project_settings
 from six import print_
+from itertools import imap
 
+@task
+def lstrip_tag_names():
+    '''lstrip "#" of tag_names. i.e.  #mmd -> mmd '''
+
+    settings = get_project_settings()
+    files_store = settings.get('FILES_STORE')
+    from scrapymongo import mongodb
+
+    with mongodb(settings) as db:
+        cur = db.art.find({'tag_names': { '$in': [re.compile('#')]}}, {'url':1,'tag_names':1})
+        objs = list(cur)
+        print_("Count:%s" % len(objs))
+        pcnt = 0
+        for obj in objs:
+            tag_names = obj['tag_names']
+            new_tag_names = list(imap(lambda tag: tag.lstrip('#'), tag_names))
+            #print_({'url': obj['url']}, { '$set' : { 'tag_names' : new_tag_names }})
+            res = db.art.update({'url': obj['url']}, { '$set' : { 'tag_names' : new_tag_names }})
+            print_('.',end='')
+            pcnt += 1
+        print_("\nDone: %s" %pcnt)
+            
+            
+        
+
+
+            
+    
 @task
 def remove_fail_cache():
     ''' some fail need remove httpcache entries to recover. 
