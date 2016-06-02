@@ -40,7 +40,7 @@ class YAFilePipeline(FilesPipeline):
 
         for n in item.keys():
             field = item.fields[n]
-            if 'file_url' in field:
+            if 'file_url' in field and item[n]:  # is file_url field and value not None
                 cfg = field['file_url']
 
                 r = Request(item[n])
