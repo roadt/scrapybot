@@ -13,10 +13,11 @@ Current  spiders in it.
     * qidan  - famous chinese online novel site.
 	* pptv - chinese online video site
 	* deviantart -  art/pictures sharing site
+	* proxylist(plist) -   freeproxylists.net 
     * crunchbase -  a YP, company information site.  ( not work now  due to site redesign)
     * manta  - small business info site. (site is not reachable now)
-	  
-	* cache - a web crawler for cache whole site with externdable filter method  (status: work)
+
+	* cache - a web crawler for cache whole site with externdable filter method 
 
 
 and a simple flask webapp to visulize scraped data  for

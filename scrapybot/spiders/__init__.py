@@ -51,15 +51,17 @@ class ArgsSupport(object):
                 if callable(urlg):
                     kwargs.update(urlg(**kwargs))
 
-
         # urls
         urls = set()
         param_url = kwargs.get('url')
         if param_url:
             urls = urls.union(param_url)
 
-    
-        # deeal wiht urlgen
+        # start_urls
+        if self.start_urls:
+            urls = urls.union(self.start_urls)
+        
+        # go
         logger.debug("%s:%s %s" % (type(self).__name__,  'start_requests',  [kwargs, urls]))
         for url in urls:
             callback = self.callback_from_url(url)
@@ -99,3 +101,9 @@ class ArgsSupport(object):
         else:
             return category in self.kwargs and levelname in self.kwargs[category]
 
+
+    def get(self, name):
+        if name in self.kwargs:
+            return self.kwargs[name].split(',')
+        else:
+            return []
