@@ -47,12 +47,14 @@ def remove_fail_cache():
         ''' something not right to require remove cache to recover'''
 
         fail = 'file_url' in o and not o.get('file_path') #  detail page scraped, but somehow file is not download, the url easily expried (url with token)
+        if fail:
+            return 1
         
-        if not fail:
-            with open(os.path.join(files_store, o['file_path']), 'rb') as f:
-                fail = (f.read(6) == b'<html>')   # the file is downloaded, but somehow it's a html page  not right picture or archive.
+        with open(os.path.join(files_store, o['file_path']), 'rb') as f:
+            fail = (f.read(6) == b'<html>')   # the file is downloaded, but somehow it's a html page  not right picture or archive.
 
-        return fail
+        if fail:
+            return 2
 
     def clear_cache(o):
         # remove file 
@@ -72,14 +74,15 @@ def remove_fail_cache():
             cur = db.art.find({'file_url': {'$ne':None}})
             for o in cur:
                 #print_('trying ' + o['file_path'])
-                if is_fail(o):
+                fail = is_fail(o)
+                if fail:
                     if o.get('author_name'):
                         author_names.add(o['author_name'])
                     else:
                         print_('error - author_name - %s' % o)
                     clear_cache(o)
                     pcnt+=1
-                    print_("%s,%s,%s" % (pcnt, o['author_name'], o['url']))
+                    print_("%s,%s,%s,[%s]" % (pcnt, o['author_name'], o['url'], fail))
     finally:
         print_("\n\n-------- affected authors ----------")
         print_(','.join(author_names))
