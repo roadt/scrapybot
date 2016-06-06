@@ -141,20 +141,27 @@ class DeviantArtSpider(ArgsSupport, scrapy.Spider):
                 yield a
         
         # more from artist
-        if self.go('rlevel', 'more_from_artist', False):
+        if self.go('sect', 'more_from_artist', False) and self.go('rlevel', 'art', False):
             for url in response.css('.more-from-artist-title').xpath('following-sibling::div[position()=1]').css('.stream a::attr("href")').extract():
                 r = scrapy.Request(response.urljoin(url), callback=self.parse_art_page)
                 yield r
                 
         # feature_in_fav
-        if self.go("rlevel", "feature_in_fav", False):
-            for url in response.css('.more-from-collection-preview-row a.collection-name::attr("href")').extract():
-                r = scrapy.Request(response.urljoin(url), callback=self.parse_favorites_page)
-                yield r
+        if self.go("sect", "feature_in_fav", False):
+            
+            if self.go('rlevel', 'art', False):
+                for url in response.css('.more-from-collection-preview-row .thumb a::attr("href")').extract():
+                    r = scrapy.Request(response.urljoin(url), callback=self.parse_art_page)
+                    yield r                
+                
+            if self.go('rlevel', 'favorite', False):
+                for url in response.css('.more-from-collection-preview-row a.collection-name::attr("href")').extract():
+                    r = scrapy.Request(response.urljoin(url), callback=self.parse_favorites_page)
+                    yield r
 
                 
         # more from devianart
-        if self.go('rlevel', 'more_from_da', False):
+        if self.go('sect', 'more_from_da', False) and self.go('rlevel', 'art', False):
             for url in response.css('.more-from-da-title').xpath('following-sibling::div[position()=1]').css('.stream a::attr("href")').extract():
                 r = scrapy.Request(response.urljoin(url), callback=self.parse_art_page)
                 yield r
