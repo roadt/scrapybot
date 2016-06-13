@@ -26,6 +26,7 @@ and a simple flask webapp to visulize scraped data  for
 	* qidan
 
 
+
 Try it
 ========================
 	    git clone https://github.com/roadt/scrapybot
@@ -40,6 +41,14 @@ start flask app
 	  $ web/qidian/app.sh
 
 
+More examples:
+
+	# cache whole dmoz site (restrict link resolution among dmoz.org site)
+	scrapy crawl cache  -a url=http://www.dmoz.org -a regex=dmoz.org
+	
+	# scrap a dev art (pic or file)
+	scrapy crawl devart -a url=http://xxx.deviantart.com/art/YYYY
+		
  
  MIT License.
 =======
