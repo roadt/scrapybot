@@ -29,11 +29,11 @@ COOKIES_ENABLED = True
 
 
 ############  Pipelines Section ##############
-ITEM_PIPELINES = [
+ITEM_PIPELINES = {
 #    'scrapybot.pipelines.ScrapybotPipeline',
-    'scrapybot.pipelines.file.YAFilePipeline' ,
-    'scrapymongo.pipelines.MongoPipeline',
-]
+    'scrapybot.pipelines.file.YAFilePipeline' : 10,
+    'scrapymongo.pipelines.MongoPipeline' : 20,
+}
 
 
 # for scrapymongo.pipelines.MongoPipeline
