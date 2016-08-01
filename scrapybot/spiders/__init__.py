@@ -82,6 +82,7 @@ class ArgsSupport(object):
         
 
     def make_requests_from_url(self, url):
+        ''' make a request from url  using rules in callback_from url '''
         callback = self.callback_from_url(url)
         if callback:
             return scrapy.Request(url, callback=callback)
@@ -95,6 +96,7 @@ class ArgsSupport(object):
 
 
     def go(self, category, levelname, default=False):
+        ''' check switch of level on category if no explict set in kwargs, return default'''
         if default:
             nocat = "no"+category
             return not (nocat  in self.kwargs and levelname in self.kwargs[nocat])
@@ -103,6 +105,7 @@ class ArgsSupport(object):
 
 
     def get(self, name):
+        '''  get value of param, result is list'''
         if name in self.kwargs:
             return self.kwargs[name].split(',')
         else:
