@@ -52,13 +52,13 @@ FILES_EXPIRES= getenv('FILES_EXPIRES', 90)
 ##### downloader
 
 DOWNLOAD_DELAY = 1.5
-
+DOWNLOAD_WARNSIZE=100*1024*1024
 
 ##### dupfitler
 #DUPEFILTER_CLASS = 'scrapymongo.cache.CacheDupeFilter'
 DUPEFILTER_DEBUG=True
 JOB_DIR= os.path.join(FILES_STORE, 'jobs')
 ##### downloader middleware
-HTTPCACHE_ENABLED = True
+#HTTPCACHE_ENABLED = True
 HTTPCACHE_IGNORE_HTTP_CODES=[302]
 HTTPCACHE_STORAGE = 'scrapymongo.cache.MongoCacheStorage'
