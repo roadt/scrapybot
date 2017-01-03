@@ -24,12 +24,6 @@ class StashSpider(ArgsSupport, scrapy.Spider):
     def __init__(self, *args, **kwargs):
         super(StashSpider, self).__init__(*args, **kwargs)
 
-    def get(self, name):
-        if name in self.kwargs:
-            return self.kwargs[name].split(',')
-        else:
-            return []
-
     def callback_from_url(self, url):
         """
         determine parse method from url

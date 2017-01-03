@@ -38,12 +38,6 @@ class CacheSpider(ArgsSupport, scrapy.Spider):
         else:
             self.schemes = ['http', 'https']
 
-    def get(self, name):
-        if name in self.kwargs:
-            return self.kwargs[name].split(',')
-        else:
-            return []
-
     def callback_from_url(self, url):
         """
         determine parse method from url
