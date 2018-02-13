@@ -3,7 +3,7 @@ import sys,os
 import re
 import scrapy
 import logging
-import urlparse
+import urllib.parse
 from scrapybot.items.pptv import *
 from scrapybot.spiders import *
 from scrapybot.util import *
@@ -61,7 +61,7 @@ class CacheSpider(ArgsSupport, scrapy.Spider):
             'stylesheet' : 'link[rel="stylesheet"]::attr("href")',
             'script'  : 'script::attr("src")'
         }
-        for cat, expr in cfg.iteritems():
+        for cat, expr in list(cfg.items()):
             if self.go('rlevel', cat, True):
                 for url in response.css(expr).extract():
                     abs_url = response.urljoin(url)
@@ -97,7 +97,7 @@ class CacheSpider(ArgsSupport, scrapy.Spider):
             if not f in urlf_names:
                 urlf_names.insert(0,f)
 
-        kwargs  = {k: v for k,v in self.kwargs.iteritems() if k != 'url'}
+        kwargs  = {k: v for k,v in list(self.kwargs.items()) if k != 'url'}
         #  any  one deny, deny
         ok = True
         for urlf in urlf_names:

@@ -28,7 +28,7 @@ class CrunchbaseSpider(BaseSpider):
     def parse(self, response):
         hxs = HtmlXPathSelector(response)
         for url in hxs.select('//ul[@class="col1_alpha_nav"]/li/a/@href').extract():
-			yield Request(self.url_base + url, callback=self.parse_company_list)
+            yield Request(self.url_base + url, callback=self.parse_company_list)
 
 
     def parse_company_list(self, response):
@@ -62,7 +62,7 @@ class CrunchbaseSpider(BaseSpider):
         urls  = person_div.select('div[@class="col1_people_name "]/a/@href').extract()
         names  = person_div.select('div[@class="col1_people_name "]/a/text()').extract()
         titles  = person_div.select('div[@class="col1_people_title "]/text()').extract()
-        print  person_div, urls, names, titles
+        print((person_div, urls, names, titles))
         for idx in range(len(names)):
             p = Person()
             p['name'] = v(names,idx)
@@ -73,7 +73,7 @@ class CrunchbaseSpider(BaseSpider):
             if not url is None:
                 yield Request(self.url_base + url, meta={'person':p}, callback=self.parse_person_detail)
             else:
-                print p
+                print(p)
 
 
     def parse_person_detail(self, response):
@@ -95,10 +95,10 @@ class CrunchbaseSpider(BaseSpider):
             tds = row.select('td')
             name = tds[0].select("text()").extract()[0].strip()
             value = None
-            if cfg.has_key(name):
+            if name in cfg:
                 xpaths = cfg[name]
                 value = [tds[i+1].select(i<len(xpaths) and xpaths[i] or 'text()').extract()[0] for i in range(0, len(tds)-1)]
                 rows[name] = value
             else:
-                rows[name]  =  map(lambda x:self.extract(x,'text()'), tds[1:])
-		return rows
+                rows[name]  =  [self.extract(x,'text()') for x in tds[1:]]
+                return rows

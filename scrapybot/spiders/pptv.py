@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import scrapy
 import logging
-import urlparse
+import urllib.parse
 from scrapybot.items.pptv import *
 from scrapybot.spiders import *
 from scrapybot.util import *
@@ -45,7 +45,7 @@ class PPTVSpider(ArgsSupport, scrapy.Spider):
 
 
     def parse_video_list(self, response):
-        part = urlparse.urlsplit(response.url)
+        part = urllib.parse.urlsplit(response.url)
         yield scrapy.Request('http://list.pptv.com/channel_list.html?' + part.query, callback=self.parse_video_list_xhr)
 
     def parse_video_list_xhr(self, response):
@@ -61,7 +61,7 @@ class PPTVSpider(ArgsSupport, scrapy.Spider):
             v['name'] = sel.css('.ui-txt .main-tt::text').extract_first()
             v['rate_avg'] = tofloat(sel.css('.ui-txt em::text').extract_first())
             v['video_count'] = toint(le(sel.css('.ui-pic .msk-txt').re('[0-9]+'), 0))
-            v['completed'] = bool(sel.css('.ui-pic .msk-txt').re(u'完'))
+            v['completed'] = bool(sel.css('.ui-pic .msk-txt').re('完'))
             yield v
 
             # whether go to video info page to dig more?
@@ -72,15 +72,15 @@ class PPTVSpider(ArgsSupport, scrapy.Spider):
 
         # next page check & url-generation
         if self.go_next('vlist') and not len(response.css('li')) < 42:
-            res = urlparse.urlsplit(response.url)
-            param_dict = urlparse.parse_qs(res.query)
+            res = urllib.parse.urlsplit(response.url)
+            param_dict = urllib.parse.parse_qs(res.query)
             v = param_dict.get('page')
             if v:
                 v[0] = incr(v[0])
             else:
                 param_dict['page'] = [2]
             new_query = unparse_qs(param_dict)
-            next_page_url = urlparse.urlunsplit((res.scheme, res.netloc, res.path, new_query, ''))
+            next_page_url = urllib.parse.urlunsplit((res.scheme, res.netloc, res.path, new_query, ''))
             logger.debug("%s:%s %s" % (type(self).__name__,  'parse_video_list_xhr',  [self.kwargs, next_page_url]))
             yield scrapy.Request(next_page_url, callback=self.parse_video_list_xhr)
 
@@ -98,25 +98,25 @@ class PPTVSpider(ArgsSupport, scrapy.Spider):
             name = li.xpath('text()').extract_first()
             logger.debug("%s:%s %s" % (type(self).__name__,  'parse_video',  [self.kwargs, v, li]))
 
-            if name == u'评分：':
+            if name == '评分：':
                 pass
-            elif name == u'声优：':
+            elif name == '声优：':
                 pass
-            elif name == u'监督：':
+            elif name == '监督：':
                 v['director_names'] = li.css('a::text').extract()
-            elif name == u'地区：':
+            elif name == '地区：':
                 v['area_name'] = li.css('a::text').extract_first()
-            elif name == u'类型：':
+            elif name == '类型：':
                 v['tag_names'] = li.css('a::text').extract()
-            elif name == u'上映：':
+            elif name == '上映：':
                 v['date_publish'] = li.css('a::text').extract_first()
-            elif u'片长' in name:
+            elif '片长' in name:
                 v['duration'] =  int(li.re('[0-9]+')[0])
-            elif u'播放' in name:
+            elif '播放' in name:
                 v['play_count'] = float(li.re('[0-9.]+')[0])*10000
                 
         v['video_count'] = response.css('.status p a::text').extract_first() or le(response.css('.dpage-nav .now::text').re('[0-9]+'), 0) or 1
-        v['completed'] = bool(response.css('.status p::text').re(u'完'))
+        v['completed'] = bool(response.css('.status p::text').re('完'))
         v['rate_avg'] = tofloat(response.css('.infolist .score::text').extract_first())
         v['actor_names'] = response.css('.infolist .actor a::text').extract()
         v['play_urls'] = response.css('.j_videoSite a::attr("href")').extract() or response.css('#juji_1 a::attr("href")').extract()

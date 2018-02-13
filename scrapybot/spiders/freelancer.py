@@ -3,7 +3,7 @@ import sys,os
 import re
 import scrapy
 import logging
-import urlparse
+import urllib.parse
 from scrapybot.items.freelancer import *
 from scrapybot.spiders import *
 from scrapybot.util import *

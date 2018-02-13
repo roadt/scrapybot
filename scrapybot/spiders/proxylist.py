@@ -3,7 +3,7 @@ import sys,os
 import re
 import scrapy
 import logging
-import urlparse
+import urllib.parse
 import scrapy
 
 from scrapybot.spiders import *
@@ -40,7 +40,7 @@ class ProxylistSpider(ArgsSupport, scrapy.Spider):
             # ok ,extract
             i = iter(sel.css('td'))
             g = Proxy()
-            g['ip'] = re.search("[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}", urlparse.unquote(i.next().css('script::text').extract_first())).group()
+            g['ip'] = re.search("[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}", urllib.parse.unquote(i.next().css('script::text').extract_first())).group()
             g['port'] = i.next().xpath('text()').extract_first()
             g['typ'] = i.next().xpath('text()').extract_first()
             g['anonymity'] = i.next().xpath('text()').extract_first()

@@ -3,7 +3,7 @@ import sys,os
 import re
 import scrapy
 import logging
-import urlparse
+import urllib.parse
 from scrapybot.items.deviantart import *
 from scrapybot.spiders import *
 from scrapybot.util import *
@@ -126,7 +126,7 @@ class DeviantArtSpider(ArgsSupport, scrapy.Spider):
 
             def lstrip_tags(tags):
                 if tags:
-                    return list(map(lambda t:t.lstrip('#'), tags))
+                    return list([t.lstrip('#') for t in tags])
 
             a['tag_names'] = lstrip_tags(response.css('.dev-about-tags-cc .discoverytag::text').extract())
             a['file_url'] = response.css('.dev-page-download::attr("href")').extract_first()

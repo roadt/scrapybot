@@ -3,7 +3,7 @@ import sys,os
 import re
 import scrapy
 import logging
-import urlparse
+import urllib.parse
 from scrapybot.items.deviantart import *
 from scrapybot.spiders import *
 from scrapybot.util import *
@@ -13,7 +13,7 @@ from scrapy.utils.misc import load_object
 logger = logging.getLogger(__name__)
 
 
-class DzolSpider(ArgSupport, scrapy.Spider):
+class DzolSpider(ArgsSupport, scrapy.Spider):
     ''' detail zol spider '''
     name = "dzol"
     allowed_domains = ["detail.zol.com.cn"]

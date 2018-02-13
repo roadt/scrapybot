@@ -44,4 +44,4 @@ class MantaSpider(CrawlSpider):
             yield c
 
     def parse_company_detail(self, response):
-        print response
+        print(response)
