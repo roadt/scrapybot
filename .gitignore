@@ -2,10 +2,18 @@
 
 # ignore all py compiled file.
 *.pyc
+__pycache__
+
+# python related
+
 *.egg-info
 *.csv
 *.json
 
-build/
 
+# scrapy 
+.scrapy/
+
+# dev other folderss
+build/
 tests/fixtures
