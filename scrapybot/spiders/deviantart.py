@@ -66,18 +66,18 @@ class DeviantArtSpider(ArgsSupport, scrapy.Spider):
     def parse_folderview(self, response):
         g = response.meta.get('g')
         # arts
-        for sel in response.css('.folderview-art .tt-a'):
+        for sel in response.css('.folderview-art .torpedo-container .thumb'):
             # skip dead art
             if sel.css('.tt-dead'):
                 continue
             # valid
             a = Art()
-            a['url']  = sel.css('.tt-w .details a::attr("href")').extract_first()
+            a['url']  = sel.css('a::attr("href")').extract_first()
 
-            a['name'] = sel.css('.tt-w .details > a > span').xpath('.//text()').extract_first()
-            a['thumb_url'] = sel.css('.shadow .thumb img::attr("src")').extract_first()
-            a['author_name'] = sel.css('.tt-w .details a.u::text').extract_first()  or (g and g.get("author_name"))
-            a['author_url'] = sel.css('.tt-w .details  a.u::attr("href")').extract_first()  or (g and g.get("author_url"))
+            a['name'] = sel.css('.info .title').xpath('.//text()').extract_first()
+            a['thumb_url'] = sel.css('.torpedo-thumb-link img::attr("src")').extract_first()
+            a['author_name'] = sel.css('.info .extra-info .artist::text').extract_first()  or (g and g.get("author_name"))
+            a['author_url'] = sel.css('.info .extra-info .artist a::attr("href")').extract_first()  or (g and g.get("author_url"))
             
             a['gallery_url'] = g and g.get('url')
             if self.go('model', 'art', True):
