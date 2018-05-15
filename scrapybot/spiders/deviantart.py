@@ -40,7 +40,7 @@ class DeviantArtSpider(ArgsSupport, scrapy.Spider):
         # basic info
         g = Gallery()
         g['url'] = response.url
-        g['name'] = response.css('.folderview .folderview-top .folder-title::text').extract_first()
+        g['name'] = response.css('.folderview .folderview-top .folder-title::text').extract_first() or response.css('head title::text').extract_first()
         g['description'] = response.css('.folderview .folderview-top .description::text').extract_first()
         g['author_url'] = response.css('.catbar a.username::attr("href")').extract_first()
         g['author_name'] = response.css('.catbar .username::text').extract_first()

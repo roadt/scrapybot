@@ -12,7 +12,7 @@ import .fixture
 '''
 
 import sys, os
-import urllib.request, urllib.parse, urllib.error
+import urllib
 from  scrapy.http import request, response
 
 
@@ -81,9 +81,9 @@ class FixtureManager():
     
 # change default UserAgent
 if sys.version_info.major < 3:
-    class UAURLopener(urllib.request.FancyURLopener):
+    class UAURLopener(urllib.FancyURLopener):
         version = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.63 Safari/537.36"
-    urllib.request._urlopener = UAURLopener()
+    urllib._urlopener = UAURLopener()
 else:
     import urllib.request
     opener = urllib.request.build_opener()

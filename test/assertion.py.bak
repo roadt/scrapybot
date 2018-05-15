@@ -17,7 +17,7 @@ class ItemAssertion:
           
         '''
         if isinstance(item, scrapy.item.Item):
-            for n, cfg  in item.fields.items():
+            for n, cfg  in item.fields.iteritems():
                 if cfg.get('required'):
                     self.assertIsNotNone(item.get(n), "%s is required but None"%n)
                     

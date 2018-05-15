@@ -1,0 +1,4 @@
+{
+  "shovel/da.py": true,
+  "test/deviantart_test.py::DevaintArtSpiderTestCase::test_parse_gallery_page": true
+}

@@ -3,7 +3,8 @@
 
 import os
 import unittest
-import fixture
+from test import fixture
+
 
 
 class FixtureTestCase(unittest.TestCase):
@@ -13,20 +14,17 @@ class FixtureTestCase(unittest.TestCase):
         self.settings = [
             {
                 'name':'test01',
-                'url': 'http://www.dmoz.org/'
+                'url': 'http://example.org'
             },
             {
                 'name': 'test02',
-                'url': 'http://www.dmoz.org/docs/en/about.html'
+                'url': 'http://example.com/'
             }
         ]
 
         self.fixturemgr = fixture.FixtureManager(self.settings)
+        self.test_get_download_fixtures()
 
-    def test_remove_download(self):
-        self.fixturemgr.remove_download()
-        for fixture in self.fixturemgr.fixtures:
-            self.assertFalse(os.path.exists(fixture['path']))
 
     def test_get_download_fixtures(self):
         self.fixturemgr.download_fixtures()
@@ -40,4 +38,9 @@ class FixtureTestCase(unittest.TestCase):
         self.assertEqual(resp.url, setting['url'])
 
 
-        
+    def test_remove_download(self):
+        self.fixturemgr.remove_download()
+        for fixture in self.fixturemgr.fixtures:
+            self.assertFalse(os.path.exists(fixture['path']))
+
+

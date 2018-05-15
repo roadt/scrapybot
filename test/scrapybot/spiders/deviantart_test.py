@@ -3,14 +3,11 @@
 import sys, os
 import unittest
 import scrapy
-import fixture
-import config
-
-import assertion
+from test import (fixture, config, assertion)
 
 # add project dir into serach path
-dirname=os.path.dirname
-sys.path.append(dirname(dirname(__file__)))
+#dirname=os.path.dirname
+#sys.path.append(dirname(dirname(__file__)))
 
 # import spider , item def
 from scrapybot.spiders.deviantart import *
@@ -30,6 +27,7 @@ class  DevaintArtSpiderTestCase(unittest.TestCase, assertion.ItemAssertion):
         '''
         resp = self.fixtures.get_fixture_response('gallery_normal')
         result = list(self.spider.parse_gallery_page(resp))
+        print(result)
         
         self.assertIsNotNone(result)
         self.assertGreater(len(result), 0)
@@ -79,8 +77,4 @@ class  DevaintArtSpiderTestCase(unittest.TestCase, assertion.ItemAssertion):
         for item in items:
             self.assertItem(item)
 
-
-
-
-        
 

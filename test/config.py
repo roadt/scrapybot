@@ -13,6 +13,5 @@ deviantart_fixtures = [
 ]
 
 
-
 #
 

@@ -18,7 +18,7 @@
 # Add files and commands to this file, like the example:
 #   watch(%r{file/path}) { target test file/path }
 #
-guard :pytest, pytest_option: "--doctest-modules -q --color=yes" do
+guard :pytest, pytest_option: "--doctest-modules -q --capture=sys --color=yes" do
   watch(%r{^((?!test/).*)\.py$})  {|m| "test/#{m[1]}_test.py" }
   watch(%r{^test/.*_test\.py$})
 end
