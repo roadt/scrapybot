@@ -1,3 +1,5 @@
 scrapy>=1.0.5
-pymongo=3.2.2
-shovel=0.3.0
+pymongo==3.5.1
+shovel==0.3.0
+pytest==3.3.2
+PyYAML==3.12
