@@ -5,7 +5,7 @@ from shovel import task
 from pymongo import MongoClient,ASCENDING
 from scrapy.utils.project import get_project_settings
 from six import print_
-from itertools import imap
+
 
 @task
 def lstrip_tag_names():
@@ -22,7 +22,7 @@ def lstrip_tag_names():
         pcnt = 0
         for obj in objs:
             tag_names = obj['tag_names']
-            new_tag_names = list(imap(lambda tag: tag.lstrip('#'), tag_names))
+            new_tag_names = list(map(lambda tag: tag.lstrip('#'), tag_names))
             #print_({'url': obj['url']}, { '$set' : { 'tag_names' : new_tag_names }})
             res = db.art.update({'url': obj['url']}, { '$set' : { 'tag_names' : new_tag_names }})
             print_('.',end='')

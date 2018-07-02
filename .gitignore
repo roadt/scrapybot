@@ -13,6 +13,7 @@ __pycache__
 
 # scrapy 
 .scrapy/
+.cache
 
 # dev other folderss
 build/

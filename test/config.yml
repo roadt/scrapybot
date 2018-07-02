@@ -4,7 +4,15 @@ zdic:
   - name: zdic_z_jbs_bh
     url: http://www.zdic.net/z/jbs/zbh/
 
-  # 汉字解释
+  # 字表
+  - name: zdic_z_zb_cc1
+    url: http://www.zdic.net/z/zb/cc1.htm
+  - name: zdic_z_zb_cc2
+    url: http://www.zdic.net/z/zb/cc2.htm
+  - name: zdic_z_zb_ty
+    url: http://www.zdic.net/z/zb/ty.htm
+
+  # 汉字 - 基本解释
   - name: zdic_z_js_738b
     url: http://www.zdic.net/z/1e/js/738B.htm
       
