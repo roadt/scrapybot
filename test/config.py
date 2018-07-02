@@ -13,5 +13,11 @@ deviantart_fixtures = [
 ]
 
 
-#
+# load from yaml file
+from os.path import dirname, join
+import yaml
+
+def yaml_config():
+    with open(join(dirname(__file__), 'config.yml')) as f:
+        return yaml.load(f)
 

@@ -1,0 +1,10 @@
+zdic:
+  - name: zdic_z_jbs
+    url: http://www.zdic.net/z/jbs/
+  - name: zdic_z_jbs_bh
+    url: http://www.zdic.net/z/jbs/zbh/
+
+  # 汉字解释
+  - name: zdic_z_js_738b
+    url: http://www.zdic.net/z/1e/js/738B.htm
+      

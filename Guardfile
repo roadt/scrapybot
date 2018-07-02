@@ -19,6 +19,12 @@
 #   watch(%r{file/path}) { target test file/path }
 #
 guard :pytest, pytest_option: "--doctest-modules -q --capture=sys --color=yes" do
+  # normal file change,  trigger/run test/<path>_test.py
   watch(%r{^((?!test/).*)\.py$})  {|m| "test/#{m[1]}_test.py" }
+  # test/<path>.py change, just run
   watch(%r{^test/.*_test\.py$})
+
+  # normal file under test/<path>.py,  run  test/<path>_test.py
+  watch(%r{^test/(.*(?!_test))\.py$})  {|m| "test/#{m[1]}_test.py" }
+
 end
