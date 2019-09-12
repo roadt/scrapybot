@@ -5,7 +5,7 @@
 
 from scrapybot.items import *
 
-import MySQLdb
+import pymysql as MySQLdb
 
 class ScrapybotPipeline(object):
     def __init__(self):
