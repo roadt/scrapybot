@@ -17,11 +17,11 @@ class ZDicSpider(ArgsSupport, scrapy.Spider):
     ''' zdic spider '''
     name = "zdic"
     allowed_domains = ["zdic.net"]
-    start_urls = 'http://www.zdic.net/z/jbs/zbh/'
+    start_urls = ['https://www.zdic.net/zd/bs/']
 
-    hzs_cc1_url = 'http://www.zdic.net/z/zb/cc1.htm'
-    hzs_cc2_url = 'http://www.zdic.net/z/zb/cc2.htm'
-    hzs_ty_url = 'http://www.zdic.net/z/zb/ty.htm'
+    hzs_cc1_url = 'http://www.zdic.net/zd/zb/cc1'
+    hzs_cc2_url = 'http://www.zdic.net/zd/zb/cc2'
+    hzs_ty_url = 'http://www.zdic.net/zd/zb/ty'
 
     def __init__(self, *args, **kwargs):
         super(ZDicSpider, self).__init__(*args, **kwargs)
@@ -31,15 +31,26 @@ class ZDicSpider(ArgsSupport, scrapy.Spider):
         determine parse method from url
         """
 
-        #http://www.zdic.net/z/zb/cc1.htm
-        if re.search("http://www.zdic.net/z/zb", url):
+        #http://www.zdic.net/zd/zb/cc1
+        if re.search("https?://www.zdic.net/zd/zb", url):
             return self.parse_z_zb_page
 
-        #http://www.zdic.net/z/15/js/5143.htm
-        if re.search("http://www.zdic.net/z/[^/]+/js/[^/]+.htm", url):
-            return self.parse_z_js_page
+        #http://www.zdic.net/hans/一
+        if re.search("https?://www.zdic.net/hans/", url):
+            return self.parse_hans_page
 
         return None
+
+    def parse_hans_page(self, response):
+        hz = Hanzi()
+        hz['url'] = response.url
+
+        # 基本信息
+        #einfo = response.css('#ziif #z_i_1')
+        hz['thumb_url'] =  response.urljoin(response.css('#bhbs::attr("src")').extract_first())
+
+        yield hz
+        
 
     def parse_z_js_page(self, response):
         hz = Hanzi()
@@ -62,7 +73,7 @@ class ZDicSpider(ArgsSupport, scrapy.Spider):
 
 
     def parse_z_zb_page(self, response):
-        for e in response.css('.notice .bs_index3 a'):
+        for e in response.css('.bs_index3 a'):
             hz = Hanzi()
             hz['url'] = response.urljoin(e.xpath('@href').extract_first())
             hz['name'] = e.xpath('text()').extract_first()
@@ -70,7 +81,7 @@ class ZDicSpider(ArgsSupport, scrapy.Spider):
                 yield hz
             
             if self.go('rlevel', 'hanzi', False):
-                yield scrapy.Request(hz['url'], callback=self.parse_z_js_page)
+                yield scrapy.Request(hz['url'], callback=self.parse_hans_page)
         
 
     def parse_subcate_page(self, response):

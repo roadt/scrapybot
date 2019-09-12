@@ -7,8 +7,7 @@ class Hanzi(Item):
     url = Field()
 
     name = Field()
-    thumb_url = Field()
-    #thumb_url = Field({  'file_url' : { 'path': 'thumb_path'}}) 
+    thumb_url = Field({  'file_url' : { 'path': 'thumb_path'}}) 
     thumb_path = Field()
 
     # pinyin/zhuyin 注音
