@@ -1,5 +1,5 @@
 from scrapy.selector import HtmlXPathSelector
-from scrapy.spider import BaseSpider
+from scrapy.spiders import BaseSpider
 from scrapy.http import Request
 from scrapybot.items.crunchbase import Company, Office, Person
 import re

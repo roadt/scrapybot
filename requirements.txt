@@ -1,4 +1,4 @@
-scrapy>=1.0.5
+scrapy>=1.6.0
 pymongo==3.5.1
 shovel==0.3.0
 pytest==3.3.2
