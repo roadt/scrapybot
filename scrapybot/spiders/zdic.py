@@ -75,7 +75,7 @@ class ZDicSpider(ArgsSupport, scrapy.Spider):
     def parse_z_zb_page(self, response):
         for e in response.css('.bs_index3 a'):
             hz = Hanzi()
-            hz['url'] = response.urljoin(e.xpath('@href').extract_first())
+            hz['url'] = scrapy.Request(response.urljoin(e.xpath('@href').extract_first())).url
             hz['name'] = e.xpath('text()').extract_first()
             if self.go('model', 'hanzi', True):
                 yield hz
