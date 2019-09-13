@@ -51,6 +51,11 @@ class YAFilePipeline(FilesPipeline):
                 # optional
                 r.meta['f_cb'] = cfg.get('cb')
                 r.meta['f_checksum'] = field.get('checksum')
+
+                # _request headers
+                if item._headers: 
+                    r.headers.update(item._headers)
+
                 requests.append(r)
         logger.debug("%s:%s %s" % (type(self).__name__,  'get_media_requests',  requests))
         return requests

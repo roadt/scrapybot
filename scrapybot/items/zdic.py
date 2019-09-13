@@ -35,6 +35,8 @@ class Hanzi(Item):
     im_zhengma = Field()
     im_sijiao = Field()
     im_bishun = Field()
+    
+    _headers = None
 
 class Pinyin(Item):
     '''http://www.zdic.net/z/pyjs/?py=zhong1'''
