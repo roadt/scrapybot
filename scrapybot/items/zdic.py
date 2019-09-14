@@ -9,24 +9,27 @@ class Hanzi(Item):
     name = Field()
     thumb_url = Field({  'file_url' : { 'path': 'thumb_path'}}) 
     thumb_path = Field()
+    bhdh_url = Field({'file_url' : { 'path': 'bhdh_path'}}) 
+    bhdh_path = Field()
 
     # pinyin/zhuyin 注音
     py_name = Field()
     py_url = Field()
-    audio_url = Field()
-    #audio_url = Field({'file_url' : { 'path': 'audio_path'}})
-    audio_path = Field()
+    py_audio_url = Field({'file_url' : { 'path': 'py_audio_path'}})
+    py_audio_path = Field()
 
-    zy = Field()
-
-
+    zy_name = Field()
+    
 
     # 部首
-    jbs = Field()
-    jbh = Field()
-    jzbh = Field()
-    fbs = Field()
+    bs = Field()
+    bw = Field()
+    zbh = Field()
+    zxfx = Field()
+    bsn = Field()
 
+    # 异体字
+    ytz = Field()
 
     #input-method
     im_unicode = Field()

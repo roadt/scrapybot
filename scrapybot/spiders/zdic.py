@@ -48,29 +48,45 @@ class ZDicSpider(ArgsSupport, scrapy.Spider):
         # 基本信息
         #einfo = response.css('#ziif #z_i_1')
         hz['thumb_url'] =  response.urljoin(response.css('#bhbs::attr("src")').extract_first())
-        hz._headers  = { 'Referer' : response.url }
-        yield hz
-        
+        hz._headers  = { 'Referer' : response.url }  #thumb_url need referere
 
-    def parse_z_js_page(self, response):
-        hz = Hanzi()
-        hz['url'] = response.url
-        
-        # 基本信息
-        einfo = response.css('#ziif #z_i_1')
-        hz['thumb_url'] = "http://www.zdic.net/p/?l=kbg&u=%s&s=100" % re.search("/([^/]*).htm$", response.url).group(1)
-
-        for e in einfo.css('#z_info tr .dicpy'):
-            hz['py_name'] = e.css('a::text').extract_first()
-            hz['py_url'] = response.urljoin(e.css('a::attr("href")').extract_first())
-            hz['audio_url'] = 'http://www.zdic.net/p/mp3/%s.mp3' % re.search('spz\("(.*)"\)', e.css('script::text').extract_first()).group(1) 
-
+        # piyin
+        for e in response.css('.z_py .song'):
+            hz['py_name'] = e.xpath('text()').extract_first()
+            hz['py_url'] = response.urljoin(e.css('a::attr("data-src-mp3")').extract_first())
+            hz['py_audio_url'] = hz['py_url']
+            #hz['py_audio_url'] = 'http://www.zdic.net/p/mp3/%s.mp3' % re.search('spz\("(.*)"\)', e.css('script::text').extract_first()).group(1) 
+            
             # break, only 1st for now.
             break
 
+        # zhuyin
+        for e in response.css('.z_zy .song'):
+            hz['py_name'] = e.xpath('text()').extract_first()
+
+            break
+
+        # bushou
+        bs = response.css('.z_bs2 p')
+        hz['bs'] = bs[0].css('a::text').extract_first()
+        hz['bw'] = toint(bs[1].xpath('text()').extract_first())
+        hz['zbh'] = toint(bs[2].xpath('text()').extract_first())
+        hz['zxfx'] = response.css('.dsk .dsk_2_1::text').extract_first()
+        hz['bsn'] = response.css('.dsk .z_bis2 p::text').extract_first()
+
+        #yitizhi
+        hz['ytz'] = response.css('.z_ytz2 a::text').extract() + response.css('.z_ytz2 a .ytz_txt::text').extract()
+
+        # IM
+        ims = response.css('.dsk .dsk_2_1 p::text').extract()
+        hz['im_unicode'] =  ims[0]
+        hz['im_wubi'] = ims[1]
+        hz['im_changjie'] = ims[2]
+        hz['im_zhengma'] = ims[3]
+        hz['im_sijiao'] = ims[4]
+        
         yield hz
-
-
+        
 
     def parse_z_zb_page(self, response):
         for e in response.css('.bs_index3 a'):
