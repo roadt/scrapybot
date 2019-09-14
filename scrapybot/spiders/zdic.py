@@ -48,6 +48,7 @@ class ZDicSpider(ArgsSupport, scrapy.Spider):
         # 基本信息
         #einfo = response.css('#ziif #z_i_1')
         hz['thumb_url'] =  response.urljoin(response.css('#bhbs::attr("src")').extract_first())
+        hz['bhdh_url'] = response.urljoin(response.css('#bhbs::attr("data-gif")').extract_first())
         hz._headers  = { 'Referer' : response.url }  #thumb_url need referere
 
         # piyin
