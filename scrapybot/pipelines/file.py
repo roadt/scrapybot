@@ -22,6 +22,8 @@ class YAFilePipeline(FilesPipeline):
     i.e.   http://image.cmfu.com/books/1001396288/1001396288.jpg -> image.cmfu.com/books/1001396288/1001396288.jpg -> 
 
     '''
+    def __init__(self, store_uri, download_func=None, settings=None):
+        super(YAFilePipeline, self).__init__(store_uri, download_func, settings)
 
     @classmethod
     def from_settings(cls, settings):
@@ -33,7 +35,7 @@ class YAFilePipeline(FilesPipeline):
         cls.FILES_RESULT_FIELD = settings.get('FILES_RESULT_FIELD', cls.DEFAULT_FILES_RESULT_FIELD)
         cls.EXPIRES = settings.getint('FILES_EXPIRES', 90)
         store_uri = settings['FILES_STORE']
-        return cls(store_uri)
+        return cls(store_uri, settings=settings)
     
     def get_media_requests(self, item, info):
         requests = []
@@ -53,8 +55,10 @@ class YAFilePipeline(FilesPipeline):
                 r.meta['f_checksum'] = field.get('checksum')
 
                 # _request headers
-                if item._headers: 
+                if hasattr(item, '_headers') and item._headers: 
                     r.headers.update(item._headers)
+
+                logger.debug("%s:%s %s, headers: %s" % (type(self).__name__,  'get_media_requests:add_request',  r, r.headers))
 
                 requests.append(r)
         logger.debug("%s:%s %s" % (type(self).__name__,  'get_media_requests',  requests))
@@ -77,6 +81,7 @@ class YAFilePipeline(FilesPipeline):
         return path
             
     def media_downloaded(self, response, request, info):
+        logger.error("%s:%s headers: %s" % (type(self).__name__,  'media_downloaded',  response.headers)) 
         result = super(YAFilePipeline, self).media_downloaded(response, request, info)
         item = request.meta['item']
         path_field = request.meta['f_path']
