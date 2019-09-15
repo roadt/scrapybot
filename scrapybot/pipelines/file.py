@@ -70,7 +70,7 @@ class YAFilePipeline(FilesPipeline):
             path_field = request.meta['f_path']
             path_cb = request.meta['f_cb']  # callback to calcualte path of file in operating file system
             if path_cb and hasattr(item, path_cb):
-                path= getattr(item,path_cb)(request.url)
+                path= getattr(item,path_cb)(request.url, item=item)
             else:
                 params = request.url.split('/')[2:] 
                 path  =  os.path.join(*params)

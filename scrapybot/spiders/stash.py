@@ -42,7 +42,7 @@ class StashSpider(ArgsSupport, scrapy.Spider):
 
         item['file_url'] = response.css('.dev-view-meta-content  .dev-page-button::attr("href")').extract_first()
         #item._headers  = { 'Referer': response.url, 'Cookie' : response.headers[b'Set-Cookie'] }  #thumb_url need referere
-
+        item['file_ext'] = response.css('.dev-page-download .text::text').extract_first().split(' ')[0].lower()
         
         for  dt in  response.css('.dev-view-meta-content  .dev-metainfo-details dt'):
             name = dt.xpath('text()').extract_first().strip()
@@ -54,7 +54,7 @@ class StashSpider(ArgsSupport, scrapy.Spider):
         yield item
 
         #manual send download request
-        yield scrapy.Request(item['file_url'], callback=self.parse_file_download, meta = { 'item': item })
+        #yield scrapy.Request(item['file_url'], callback=self.parse_file_download, meta = { 'item': item })
 
     def parse_file_download(self, response):
         item = response.meta['item']
