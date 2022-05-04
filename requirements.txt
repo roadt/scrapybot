@@ -1,6 +1,9 @@
-scrapy>=1.6.0
-pymongo==3.5.1
-shovel==0.3.0
-pytest==3.3.2
-PyYAML==3.12
+scrapy==1.8.2
+pymongo==3.9.*
+
+#shovel==0.4.0
+pytest
+PyYAML
 pymysql
+lxml
+twisted==21.*

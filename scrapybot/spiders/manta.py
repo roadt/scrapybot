@@ -1,4 +1,4 @@
-from scrapy.selector import HtmlXPathSelector
+from scrapy.selector import *
 from scrapy.linkextractors.sgml import SgmlLinkExtractor
 from scrapy.spiders import CrawlSpider, Rule
 from scrapybot.items.manta import Company

@@ -1,5 +1,5 @@
-from scrapy.selector import HtmlXPathSelector
-from scrapy.spiders import BaseSpider
+from scrapy.selector import *
+from scrapy.spiders import *
 from scrapy.http import Request
 from scrapybot.items.crunchbase import Company, Office, Person
 import re
@@ -18,7 +18,7 @@ def v(o, idx):
 
 
 
-class CrunchbaseSpider(BaseSpider):
+class CrunchbaseSpider(Spider):
     name = 'crunchbase'
     allowed_domains = ['crunchbase.com']
     start_urls = ['http://www.crunchbase.com/companies?q=software']
