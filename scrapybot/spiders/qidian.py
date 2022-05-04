@@ -3,8 +3,8 @@ import re
 
 
 import scrapy
-from scrapy.selector import HtmlXPathSelector
-from scrapy.spiders import BaseSpider
+from scrapy.selector import *
+from scrapy.spiders import *
 from scrapy.linkextractors.sgml import SgmlLinkExtractor
 from scrapy.spiders import CrawlSpider, Rule
 from scrapy.http import Request
@@ -13,7 +13,7 @@ from scrapybot.items.qidian import *
 logger = logging.getLogger(__name__)
 
 
-class QidianSpider(BaseSpider):
+class QidianSpider(Spider):
     '''
 
     Available arguments
@@ -33,7 +33,7 @@ class QidianSpider(BaseSpider):
     name = 'qidian'
     allowed_domains = ['qidian.com']
 
-    start_urls = ['http://all.qidian.com/book/bookstore.aspx']
+    start_urls = ['https://www.qidian.com/all/']
 
     def __init__(self, *args, **kwargs):
         super(QidianSpider, self).__init__(*args, **kwargs)
@@ -106,36 +106,39 @@ class QidianSpider(BaseSpider):
         return None
 
     def callback_from_url(self, url):
-        if url.startswith('http://all.qidian.com/'):
+        if url.startswith('https://www.qidian.com/all/'):
             return self.parse_article_list
-        if re.search('http://www.qidian.com/Book/(\d+).aspx', url):
+        if re.search('https://book.qidian.com/info/(\d+)/?', url):
             return self.parse_article_detail
         return None
 
     def parse_article_detail(self, response):
-        hxs = HtmlXPathSelector(response)
+        hxs = response.selector
         i = response.meta.get('article') or  Article()
         i['url'] = response.request.url
 
-        i['title'] = response.xpath('//div[@class="book_info"]/descendant::*[@itemprop="name"]/child::text()').extract_first().strip()
-        i['description'] =  response.xpath('//div[@class="book_info"]/descendant::*[@itemprop="name"]/child::text()').extract_first().strip()
-        i['cover_url'] = response.xpath('//div[@class="pic_box"]/a/img[@itemprop="image"]/@src').extract_first()
-        i['description'] = self.extract(hxs, '//span[@itemprop="description"]/text()').strip()
-        #print i['description']
+        i['title'] = response.css('.book-img img::attr(src)').extract_first().strip()
+        i['description'] =  response.css('.book-intro p').extract_first()
+        i['cover_url'] = response.css('.book-img img::attr(src)').extract_first()
         return i
 
     def parse_article_list(self, response):
-        hxs = HtmlXPathSelector(response)
+        hxs = response.selector
         result = []
-        for h in hxs.select('//div[contains(@class,"sw1") or contains(@class,"sw2")]'):
+        for h in hxs.css('.book-img-text ul li'):  #('//div[contains(@class,"sw1") or contains(@class,"sw2")]'):
             i = Article()
-            i['title'] = self.extract(h, 'div[@class="swb"]/span/a/text()')
-            i['url'] = self.extract(h, 'div[@class="swb"]/span/a/@href')
-            i['author_name'] = self.extract(h, 'div[@class="swd"]/a/text()')
-            i['author_url'] = self.extract(h, 'div[@class="swd"]/a/@href')
-            i['char_count'] = self.extract(h, 'div[@class="swc"]/text()', 0)
-            i['last_update'] = self.extract(h, 'div[@class="swe"]/text()')
-            i['key'] = re.search("/(\d+).aspx$",i['url']).group(1)
+            i['title'] = self.extract(h, 'div[@class="book-mid-info"]/h2/a/text()')
+            i['url'] = 'https:' + self.extract(h, 'div[@class="book-mid-info"]/h2/a/@href')
+            i['description'] = h.css('.book-mid-info .intro::text').extract_first()
+            author = h.css('.book-mid-info .author')
+            if author:
+                i['author_name'] = self.extract(author, 'a[@class="name"]/text()')
+                i['author_url'] = 'https:' + self.extract(author, 'a[@class="name"]/@href')
+            update = h.css('.book-mid-info .update')
+            if update:
+                i['char_count'] =  update.css("span > span::text").extract()
+                #i['last_update'] = self.extract(h, 'div[@class="swe"]/text()')
+            i['key'] = re.search("/(\d+)/?$",i['url']).group(1)
             #Request(i['author_url'],callback=self.parse_user)
             yield i
 
@@ -157,6 +160,6 @@ class QidianSpider(BaseSpider):
         pass
 
     def extract(self, hxs, xpath, defv=None):
-        arr = hxs.select(xpath).extract()
+        arr = hxs.xpath(xpath).extract()
         return arr and arr[0] or defv
 
